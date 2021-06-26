@@ -1,0 +1,29 @@
+:root {
+  --results-columns: 2;
+}
+
+.ListOfGif {
+  column-count: var(--results-columns);
+  column-gap: 1rem;
+}
+
+.ListOfGifs-item {
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  background-color: #eee;
+  display: inline-block;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --results-columns: 3;
+  }
+}
+
+@media (min-width: 1080px) {
+  :root {
+    --results-columns: 5;
+  }
+}
