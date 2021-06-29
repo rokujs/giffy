@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 
 import useGifs from "../../hooks/useGifs";
 import Loader from "../../components/Loader";
 import Gif from "../../components/Gif";
-
-const links = ["colombia", "anime", "DemonSlayer", "mongol"];
+import Trending from "../../components/Trending";
 
 const Home = () => {
   const [keyword, setKeyword] = useState("");
@@ -22,16 +21,19 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full my-8 text-center">
-      <form onSubmit={handleSubmit}>
+    <div className="w-full my-8 text-center grid grid-rows-home grid-cols-home">
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center col-start-1 col-end-2"
+      >
         <input
           placeholder="Search a gif here"
           type="text"
           value={keyword}
           onChange={handleChange}
-          className="border-b-2 border-indigo-600 p-3 rounded-t-lg focus:outline-none"
+          className="border-b-2 border-indigo-600 p-3 rounded-tl-lg focus:outline-none"
         />
-        <button className="ring-4 ring-indigo-300 rounded bg-indigo-200 ml-4 h-10 w-10 text-white">
+        <button className="bg-indigo-600 rounded-tr-lg h-12 w-12 text-white ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 m-auto"
@@ -47,27 +49,20 @@ const Home = () => {
         </button>
       </form>
 
-      <h4 className=" text-2xl my-8 text-yellow-400">Gif más populares</h4>
-      <ul className="list-inside bg-rose-200 text-yellow-200 text-lg">
-        {links.map((link) => (
-          <li key={link}>
-            <Link className="hover:underline" to={`/search/${link}`}>
-              {link}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <Trending />
 
-      <h4 className=" text-2xl my-8 text-yellow-400">Ultimos Gifs</h4>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="ListOfGif m-10">
-          {gifs.map(({ id, title, url }) => (
-            <Gif key={id} title={title} url={url} id={id} />
-          ))}
-        </div>
-      )}
+      <div className="col-start-1 col-end-2 row-start-2 row-end-3">
+        <h4 className=" text-2xl my-8 text-yellow-400">Last Gifs</h4>
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="ListOfGif m-10">
+            {gifs.map(({ id, title, url }) => (
+              <Gif key={id} title={title} url={url} id={id} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

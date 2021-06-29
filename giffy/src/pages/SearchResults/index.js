@@ -9,16 +9,18 @@ const SearchResults = ({ params }) => {
   const { keyword } = params;
   const { loading, gifs } = useGifs({ keyword });
 
-  console.log("-");
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <div className="ListOfGif m-10">
-          {gifs.map(({ id, title, url }) => (
-            <Gif key={id} title={title} url={url} id={id} />
-          ))}
+        <div className="m-10">
+          <h4 className=" text-2xl text-yellow-400">{decodeURI(keyword)}</h4>
+          <div className="ListOfGif mt-3">
+            {gifs.map(({ id, title, url }) => (
+              <Gif key={id} title={title} url={url} id={id} />
+            ))}
+          </div>
         </div>
       )}
     </>

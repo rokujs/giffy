@@ -1,10 +1,10 @@
-const API_KEY = "YZP47vojNS62BiASpO59qDRfjx4E2iEX";
+import { API_KEY, API_URL } from "./setting";
 
-export default async function getGifs({ keyword = "meme" } = {}) {
-  const API_URL = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=10&offset=0&rating=g&lang=en`;
+export default async function getGifs({ limit = 25, keyword = "meme" } = {}) {
+  const url = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=0&rating=g&lang=en`;
 
   try {
-    const req = await fetch(API_URL);
+    const req = await fetch(url);
     const { data } = await req.json();
 
     if (Array.isArray(data)) {
