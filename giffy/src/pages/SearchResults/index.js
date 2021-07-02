@@ -1,27 +1,43 @@
-import React from "react";
-import "./styles.css";
+import React, { useRef, useEffect, useCallback } from "react";
+import debounce from "just-debounce-it";
 
-import Gif from "../../components/Gif";
-import Loader from "../../components/Loader";
-import useGifs from "../../hooks/useGifs";
+import useNearScreen from "hooks/useNearScreen";
+
+import Loader from "components/Loader";
+import useGifs from "hooks/useGifs";
+import ListOfGif from "components/ListOfGif";
 
 const SearchResults = ({ params }) => {
   const { keyword } = params;
-  const { loading, gifs } = useGifs({ keyword });
+  const { loading, gifs, setPage } = useGifs({ keyword });
+  const externalRef = useRef();
+  const { isNearScreen } = useNearScreen({
+    externalRef: loading ? null : externalRef,
+    once: false,
+  });
+
+  const debounceHandleNextPage = useCallback(
+    debounce(() => setPage((prevPage) => prevPage + 1), 200),
+    [setPage]
+  );
+
+  useEffect(() => {
+    if (isNearScreen) debounceHandleNextPage();
+  }, [debounceHandleNextPage, isNearScreen]);
 
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <div className="m-10">
-          <h4 className=" text-2xl text-yellow-400">{decodeURI(keyword)}</h4>
-          <div className="ListOfGif mt-3">
-            {gifs.map(({ id, title, url }) => (
-              <Gif key={id} title={title} url={url} id={id} />
-            ))}
+        <>
+          <div className="m-10">
+            <h4 className=" text-2xl text-yellow-400">{decodeURI(keyword)}</h4>
+            <ListOfGif gifs={gifs} />
           </div>
-        </div>
+
+          <div ref={externalRef}></div>
+        </>
       )}
     </>
   );

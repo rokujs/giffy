@@ -1,7 +1,13 @@
 import { API_KEY, API_URL } from "./setting";
 
-export default async function getGifs({ limit = 25, keyword = "meme" } = {}) {
-  const url = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=0&rating=g&lang=en`;
+export default async function getGifs({
+  limit = 5,
+  keyword = "meme",
+  page = 0,
+} = {}) {
+  const url = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${
+    page * limit
+  }&rating=g&lang=en`;
 
   try {
     const req = await fetch(url);

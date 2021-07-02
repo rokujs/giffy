@@ -1,14 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Route, Link } from "wouter";
 
 import "./App.css";
 
 import Detail from "./pages/Detail";
-import Home from "./pages/Home";
+// import Home from "pages/Home";
 import SearchResults from "./pages/SearchResults";
 import StaticContext from "./context/StaticContext";
 import Trending from "./components/Trending/index";
 import { GifsContextProvider } from "./context/GifsContext";
+
+const HomePage = React.lazy(() => import("./pages/Home"));
 
 function App() {
   return (
@@ -26,14 +28,16 @@ function App() {
             </h1>
           </Link>
         </div>
-        <section className="flex flex-wrap flex-row justify-center">
-          <GifsContextProvider>
-            <Route component={Home} />
-            <Route path="/search/:keyword" component={SearchResults} />
-            <Route component={Detail} path="/gif/:id" />
-            <Route component={Trending} path="/trends" />
-          </GifsContextProvider>
-        </section>
+        <Suspense fallback={null}>
+          <section className="block">
+            <GifsContextProvider>
+              <Route component={HomePage} path="/" />
+              <Route component={SearchResults} path="/search/:keyword" />
+              <Route component={Detail} path="/gif/:id" />
+              <Route component={Trending} path="/trends" />
+            </GifsContextProvider>
+          </section>
+        </Suspense>
       </div>
     </StaticContext.Provider>
   );
