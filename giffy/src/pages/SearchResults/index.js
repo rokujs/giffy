@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import debounce from "just-debounce-it";
+import { Helmet } from "react-helmet";
 
 import useNearScreen from "hooks/useNearScreen";
 
@@ -31,6 +32,10 @@ const SearchResults = ({ params }) => {
         <Loader />
       ) : (
         <>
+          <Helmet>
+            <title>{keyword} | giffy</title>
+            <meta name="description" content={`results of ${keyword}`}></meta>
+          </Helmet>
           <div className="m-10">
             <h4 className=" text-2xl text-yellow-400">{decodeURI(keyword)}</h4>
             <ListOfGif gifs={gifs} />

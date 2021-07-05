@@ -1,7 +1,7 @@
 import { API_KEY, API_URL } from "./setting";
 
 export default async function getGifs({
-  limit = 5,
+  limit = 15,
   keyword = "meme",
   page = 0,
 } = {}) {
